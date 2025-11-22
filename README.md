@@ -1,5 +1,7 @@
 # 🚀 Two-Tier DevOps Application
 
+![Two-Tier App Demo](screenshots/frontend-ui.png)
+
 A modern two-tier web application demonstrating DevOps best practices with Docker, Jenkins CI/CD, and containerized deployment.
 
 ## 📋 Table of Contents
@@ -78,21 +80,21 @@ docker-compose logs -f
 
 ## 📸 Application Screenshots
 
-### Frontend Interface
+### 🌐 Frontend Interface
 ![Frontend UI](screenshots/frontend-ui.png)
-*Two-Tier application frontend with clean, modern interface*
+*Clean, responsive web interface with real-time backend connectivity*
 
-### Backend API Response
+### 🔌 API Response Demo
 ![Backend Response](screenshots/backend-response.png)
-*JSON response from backend API endpoint*
+*Live JSON response showing successful frontend-backend communication*
 
-### Docker Containers Status
+### 🐳 Docker Containers
 ![Docker Containers](screenshots/docker-containers.png)
-*Running Docker containers showing healthy status*
+*Containerized services running with health checks*
 
-### Jenkins CI/CD Pipeline
+### ⚙️ CI/CD Pipeline
 ![Jenkins Pipeline](screenshots/jenkins-pipeline.png)
-*Automated CI/CD pipeline execution in Jenkins*
+*Automated build, test, and deployment pipeline*
 
 ## 💻 Development
 
@@ -286,13 +288,16 @@ journalctl -u docker
 
 ## 📝 Project Demo
 
-### Live Application Flow
+### 🌐 Live Application Preview
+![App Demo](screenshots/frontend-ui.png)
+
+### 🔄 Application Flow
 1. **Frontend Loading**: Clean, responsive UI loads at http://localhost:8080
-2. **Backend Connection**: Click "Check Backend" to test API connectivity
+2. **Backend Connection**: Click "Check Backend" to test API connectivity  
 3. **Real-time Response**: See live timestamp and message from backend
 4. **Health Monitoring**: Backend health checks ensure reliability
 
-### Expected Output
+### 📊 Expected API Output
 ```json
 {
   "message": "Hello from Two-Tier Backend!",
