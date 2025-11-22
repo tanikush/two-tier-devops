@@ -1,0 +1,165 @@
+Jenkins Pipeline Output Sample:
+
+Started by user admin
+Running in Durability level: MAX_SURVIVABILITY
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/two-tier-devops-pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential github-creds
+Cloning the remote Git repository
+Cloning repository https://github.com/tanishakushwah/two-tier-devops.git
+[Pipeline] sh
++ git clean -fdx
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Images)
+[Pipeline] parallel
+[Pipeline] { (Branch: Build Backend)
+[Pipeline] dir
+Running in /var/jenkins_home/workspace/two-tier-devops-pipeline/backend
+[Pipeline] {
+[Pipeline] sh
++ docker build -t tanishakushwah/two-tier-backend:1 -t tanishakushwah/two-tier-backend:latest .
+Step 1/7 : FROM node:18-alpine
+ ---> 8d6421d663b4
+Step 2/7 : RUN apk add --no-cache curl
+ ---> Using cache
+ ---> 5f3700839c02
+Step 3/7 : WORKDIR /app
+ ---> Using cache
+ ---> ab78ddc48375
+Step 4/7 : COPY package*.json ./
+ ---> Using cache
+ ---> 642913569698
+Step 5/7 : RUN npm install --production && npm cache clean --force
+ ---> Using cache
+ ---> 14a8f982a7f7
+Step 6/7 : RUN addgroup -g 1001 -S nodejs &&     adduser -S nodejs -u 1001
+ ---> Using cache
+ ---> fefe1963a220
+Step 7/7 : COPY --chown=nodejs:nodejs . .
+ ---> Using cache
+ ---> 989aacee1b24
+Successfully built 989aacee1b24
+Successfully tagged tanishakushwah/two-tier-backend:1
+Successfully tagged tanishakushwah/two-tier-backend:latest
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] { (Branch: Build Frontend)
+[Pipeline] dir
+Running in /var/jenkins_home/workspace/two-tier-devops-pipeline/frontend
+[Pipeline] {
+[Pipeline] sh
++ docker build -t tanishakushwah/two-tier-frontend:1 -t tanishakushwah/two-tier-frontend:latest .
+Step 1/3 : FROM nginx:alpine
+ ---> b3c656d55d7a
+Step 2/3 : COPY nginx.conf /etc/nginx/conf.d/default.conf
+ ---> Using cache
+ ---> 90a79ee2a3e0
+Step 3/3 : COPY index.html /usr/share/nginx/html/index.html
+ ---> Using cache
+ ---> df2f2ea27ea2
+Successfully built df2f2ea27ea2
+Successfully tagged tanishakushwah/two-tier-frontend:1
+Successfully tagged tanishakushwah/two-tier-frontend:latest
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ docker run --rm -d --name test-backend -p 3001:3000 tanishakushwah/two-tier-backend:1
+873ad10fa662d3442697abd7c1d43a950c6cd71d076bfcee104385ffbf370863
+[Pipeline] sh
++ sleep 10
+[Pipeline] sh
++ curl -f http://localhost:3001/health
+{"status":"healthy","timestamp":"2024-01-15T10:30:00.000Z"}
+[Pipeline] sh
++ docker stop test-backend
+test-backend
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Images)
+[Pipeline] when
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $DOCKER_PASS
+[Pipeline] {
+[Pipeline] sh
++ echo ****
++ docker login -u tanishakushwah --password-stdin
+Login Succeeded
+[Pipeline] sh
++ docker push tanishakushwah/two-tier-backend:1
+The push refers to repository [docker.io/tanishakushwah/two-tier-backend]
+5f70bf18a086: Pushed
+1: digest: sha256:989aacee1b248f51237d454e57707df5475cbcd84c98c3c5c41ecd9617f6059c size: 1234
+[Pipeline] sh
++ docker push tanishakushwah/two-tier-backend:latest
+The push refers to repository [docker.io/tanishakushwah/two-tier-backend]
+5f70bf18a086: Layer already exists
+latest: digest: sha256:989aacee1b248f51237d454e57707df5475cbcd84c98c3c5c41ecd9617f6059c size: 1234
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // when
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] sh
++ docker-compose down
+Stopping two_tier_frontend ... done
+Stopping two_tier_backend  ... done
+Removing two_tier_frontend ... done
+Removing two_tier_backend  ... done
+Removing network two-tier-network
+[Pipeline] sh
++ docker-compose up -d --build
+Creating network "two-tier-network" with the default driver
+Creating two_tier_backend ... done
+Creating two_tier_frontend ... done
+[Pipeline] sh
++ sleep 30
+[Pipeline] sh
++ curl -f http://localhost:8080
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Two-Tier App</title>
+...
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Post Actions)
+[Pipeline] sh
++ docker system prune -f
+Deleted Images:
+untagged: tanishakushwah/two-tier-backend@sha256:989aacee1b248f51237d454e57707df5475cbcd84c98c3c5c41ecd9617f6059c
+Total reclaimed space: 0B
+[Pipeline] echo
+Pipeline succeeded!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS

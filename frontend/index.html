@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Two-Tier App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: white;
+      padding: 2rem 3rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 380px;
+    }
+
+    h1 {
+      margin-bottom: 0.5rem;
+      color: #1f2937;
+      font-size: 1.7rem;
+    }
+
+    #msg {
+      color: #374151;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      padding: .7rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Two-Tier Demo App</h1>
+    <p id="msg">Backend status: unknown</p>
+    <button id="btn">Check Backend</button>
+  </div>
+
+  <script>
+    document.getElementById('btn').onclick = async () => {
+      try {
+        const res = await fetch('/api/hello');
+        const j = await res.json();
+        document.getElementById('msg').innerText =
+          `✔ Message: ${j.message}\n⏱ Time: ${j.time}`;
+      } catch (e) {
+        document.getElementById('msg').innerText = "❌ Error: " + e.message;
+      }
+    };
+  </script>
+</body>
+</html>
+

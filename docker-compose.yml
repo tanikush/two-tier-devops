@@ -1,0 +1,39 @@
+# Docker Compose file for Two-Tier Application
+
+services:
+  backend:
+    build: ./backend
+    image: tanishakushwah/two-tier-backend:latest
+    container_name: two_tier_backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - two-tier-net
+
+  frontend:
+    build: ./frontend
+    image: tanishakushwah/two-tier-frontend:latest
+    container_name: two_tier_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - two-tier-net
+
+networks:
+  two-tier-net:
+    driver: bridge
+    name: two-tier-network
