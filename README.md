@@ -81,7 +81,7 @@ docker-compose logs -f
 ## 📸 Application Screenshots
 
 ### 🌐 Frontend Interface
-![Frontend UI](screenshots/frontend-ui.png)
+![Frontend UI](screenshots/frontend.png)
 *Clean, responsive web interface with real-time backend connectivity*
 
 ### 🔌 API Response Demo
