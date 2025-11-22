@@ -1,6 +1,6 @@
 # 🚀 Two-Tier DevOps Application
 
-![Two-Tier App Demo](screenshots/frontend-ui.png)
+![Two-Tier App Demo](screenshots/frontend.png)
 
 A modern two-tier web application demonstrating DevOps best practices with Docker, Jenkins CI/CD, and containerized deployment.
 
@@ -81,7 +81,7 @@ docker-compose logs -f
 ## 📸 Application Screenshots
 
 ### 🌐 Frontend Interface
-![Frontend UI](screenshots/frontend.png)
+![Frontend UI](screenshots/frontend-ui.png)
 *Clean, responsive web interface with real-time backend connectivity*
 
 ### 🔌 API Response Demo
