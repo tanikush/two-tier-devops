@@ -288,9 +288,6 @@ journalctl -u docker
 
 ## 📝 Project Demo
 
-### 🌐 Live Application Preview
-![App Demo](screenshots/frontend-ui.png)
-
 ### 🔄 Application Flow
 1. **Frontend Loading**: Clean, responsive UI loads at http://localhost:8080
 2. **Backend Connection**: Click "Check Backend" to test API connectivity  
